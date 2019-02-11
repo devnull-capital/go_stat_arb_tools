@@ -2,6 +2,8 @@ package statsArb
 
 import (
 	"errors"
+	"fmt"
+	"math"
 
 	"gonum.org/v1/gonum/stat"
 )
@@ -14,8 +16,8 @@ func ZNorm(l1 []float64) ([]float64, error) {
 	}
 
 	std := stat.StdDev(l1, nil)
-	if std == 0 {
-		return nil, errors.New("std dev is zero")
+	if std == 0 || math.IsNaN(std) || math.IsInf(std, 1) || math.IsInf(std, -1) {
+		return nil, fmt.Errorf("invalid std: %v", std)
 	}
 
 	mean := stat.Mean(l1, nil)

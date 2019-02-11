@@ -82,3 +82,22 @@ func TestCalcDist(t *testing.T) {
 		t.Errorf("expected %s received %s", fmt.Sprintf("%.4f", 757.9458835107689), fmt.Sprintf("%.4f", dist))
 	}
 }
+
+func TestCalcNotes(t *testing.T) {
+	// 1. use birth data
+	data, err := fetchFemaleBirthsData()
+	if err != nil {
+		t.Fatalf("err fetching birth data\n%v", err)
+	}
+
+	notes, err := CalcNotes(data, data)
+	if err != nil {
+		t.Fatalf("err calcing notes\n%v", err)
+	}
+
+	for idx := range notes {
+		if 0 != notes[idx] {
+			t.Errorf("expected 0, received %v", notes[idx])
+		}
+	}
+}

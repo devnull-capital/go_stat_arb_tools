@@ -40,3 +40,27 @@ func CalcDist(l1, l2 []float64) (float64, error) {
 
 	return dist, nil
 }
+
+func CalcNotes(l1, l2 []float64) ([]float64, error) {
+	if l1 == nil || len(l1) == 0 {
+		return nil, errors.New("l1 is required")
+	}
+	if l2 == nil || len(l2) == 0 {
+		return nil, errors.New("l2 is required")
+	}
+	if len(l1) != len(l2) {
+		return nil, errors.New("lists are not the same length")
+	}
+
+	betaHat, err := CalcBetaHat(l1, l2)
+	if err != nil {
+		return nil, err
+	}
+
+	var ut []float64
+	for idx := range l1 {
+		ut = append(ut, math.Log(l1[idx])-math.Log(l2[idx])-math.Log(betaHat))
+	}
+
+	return ut, nil
+}
